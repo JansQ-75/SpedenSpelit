@@ -12,13 +12,6 @@
   Arduino pin 9  = serial to parallel component outEnable
   Arduino pin 8  = serial to parallel component serialInput
 */
-int Input_pin = 13; // set Arduino pin 13 = serial to parallel component Input
-int ORC_pin = 12; // set Arduino pin 12 = serial to parallel component Output register clock
-int SRC_pin = 11; // set Arduino pin 11 = serial to parallel component Shift Register Clock
-
-int Input_pin2 = 10;
-int ORC_pin2 = 9;
-int SRC_pin2 = 8;
 
 void initializeDisplay(void);
 
@@ -38,6 +31,8 @@ void initializeDisplay(void);
   multiple times to write all cascaded numbers to 7-segment
   displays.
 */
+
+
 void writeByte(uint8_t number, bool last);
 
 
