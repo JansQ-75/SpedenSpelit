@@ -61,8 +61,8 @@ void writeHighAndLowNumber(uint8_t tens,uint8_t ones);
 void showResult(byte result);
 
 /*
-  gameOver() subroutine is called when player loses the game.
-  Subroutine writes text "Loser...see ya" to 7-segment display. 
+  gameOver() function is called when player loses the game.
+  Function writes text "Loser...see ya" to 7-segment display. 
   Text is shown letter by letter.
 */
 void gameOver();
