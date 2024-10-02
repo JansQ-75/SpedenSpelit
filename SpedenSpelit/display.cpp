@@ -56,4 +56,25 @@ void showResult(byte result)
   writeHighAndLowNumber(tens, ones);
 }
 
+void gameOver()
+{
+  uint8_t dec_letters [16] {14, 29, 91, 79, 5, 128, 128, 128, 91, 79, 79, 0, 51, 119, 0, 0}; // decimals indicating text "LOSER...SEE(blank)YA(blank)(blank)" to shift register
+
+  // loop to display letters in order
+    
+  for(int i=0;i<16;i++)
+  {
+    // shows the letter in first 7-segment display
+    digitalWrite(STCP_pin,LOW);
+    shiftOut(DS_pin, SHCP_pin, LSBFIRST,dec_letters[i]);
+    digitalWrite(STCP_pin, HIGH);
+    delay(600); // delay to make reading easier
+    // shows the letter in second 7-segment display
+    digitalWrite(STCP_pin2,LOW);
+    shiftOut(DS_pin2, SHCP_pin2, LSBFIRST,dec_letters[i]);
+    digitalWrite(STCP_pin2, HIGH);
+  
+  }
+}
+
 
