@@ -58,7 +58,7 @@ void loop()
   {
      // new random number must be generated
      // and corresponding let must be activated
-     void setLed(randNumber); // active the random led
+      setLed(randNumber); // active the random led
      newTimerInterrupt = false; //reset the flag (boolean to false)
   }
 }
