@@ -1,13 +1,13 @@
 #include "display.h"
-
-
-void initializeDisplay(void)
-{
 const int DS_pin = 10; // Arduino pin 13 = input pin in first shift register
 const int STCP_pin = 9; // Arduino pin 12 = latch pin in first shift register
 const int SHCP_pin = 8; // Arduino pin 11 = clock pin in first shift register
 const int STCP_pin2 = 12; // Arduino pin 9 = latch pin in second shift register
 const int SHCP_pin2 = 11; // Arduino pin 8 = clock pin in second shift register
+
+void initializeDisplay(void)
+{
+
 
 // set shift registers pins to output
 pinMode(DS_pin, OUTPUT);   

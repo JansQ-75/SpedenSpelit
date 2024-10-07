@@ -16,7 +16,7 @@ const int SHCP_pin = 8; // Arduino pin 11 = clock pin in first shift register
 
 // Use these 2 volatile variables for communicating between
 // loop() function and interrupt handlers
-volatile int buttonNumber = -1;           // for buttons interrupt handler
+          // for buttons interrupt handler
 volatile bool newTimerInterrupt = false;  // for timer interrupt handler
 
 // variables for timer1
@@ -30,6 +30,10 @@ volatile int arrayIndex = 0; // variable to indicate where to store number in ar
 
 void setup()
 {
+    Serial.begin(9600);
+  interrupts();
+  initButtonsAndButtonInterrupts();
+  initializeDisplay();
   /*
     Initialize here all modules
   */
@@ -38,6 +42,12 @@ void setup()
 
 void loop()
 {
+
+      if (buttonNumber != 0) {
+      Serial.print("Painettu nappi: ");
+    Serial.println(buttonNumber);
+    buttonNumber = 0;
+    }
   if(buttonNumber>=0)
   {
      // start the game if buttonNumber == 4
