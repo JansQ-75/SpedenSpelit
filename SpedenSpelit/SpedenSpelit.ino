@@ -2,20 +2,31 @@
 #include "buttons.h"
 #include "leds.h"
 #include "SpedenSpelit.h"
+// Digitalpins for shift registers
+const int STCP_pin2 = 12; // Arduino pin 9 = latch pin in second shift register
+const int SHCP_pin2 = 11; // Arduino pin 8 = clock pin in second shift register
+const int DS_pin = 10; // Arduino pin 13 = input pin in first shift register
+const int STCP_pin = 9; // Arduino pin 12 = latch pin in first shift register
+const int SHCP_pin = 8; // Arduino pin 11 = clock pin in first shift register
+
+// Digitalpins for buttons
+
+// Analogpins for leds
+
 
 // Use these 2 volatile variables for communicating between
 // loop() function and interrupt handlers
 volatile int buttonNumber = -1;           // for buttons interrupt handler
 volatile bool newTimerInterrupt = false;  // for timer interrupt handler
+
+// variables for timer1
 volatile int randNumber = 0; // variable for random numbers generated with timer1
 volatile int interruptCounter = 0; // variable to count amount of interrupts
 volatile unsigned long currentOCR1A = 15624; // variable to OCR1A, value is increased after 10 interrupts
+volatile int randArray[300]; // array to store generated numbers
+volatile int arrayIndex = 0; // variable to indicate where to store number in array
 
-const int DS_pin = 10; // Arduino pin 13 = input pin in first shift register
-const int STCP_pin = 9; // Arduino pin 12 = latch pin in first shift register
-const int SHCP_pin = 8; // Arduino pin 11 = clock pin in first shift register
-const int STCP_pin2 = 12; // Arduino pin 9 = latch pin in second shift register
-const int SHCP_pin2 = 11; // Arduino pin 8 = clock pin in second shift register
+
 
 void setup()
 {
@@ -70,6 +81,18 @@ ISR(TIMER1_COMPA_vect)
   */
   // Generate a random number when the interrupt occurs
   randNumber = random(0, 3);
+
+  // stores generated number to array
+  randArray[arrayIndex] = randNumber;
+  
+  // Increments arrayIndex by 1
+  arrayIndex++;
+
+  // resets arrayIndex if 300 has been reached
+  if (arrayIndex > 300) {
+    arrayIndex = 0;
+  }
+
   // Increments counter by 1
   interruptCounter++;
 
