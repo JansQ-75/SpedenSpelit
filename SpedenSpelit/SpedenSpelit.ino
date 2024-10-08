@@ -16,7 +16,6 @@ const int SHCP_pin = 8; // Arduino pin 11 = clock pin in first shift register
 
 // Use these 2 volatile variables for communicating between
 // loop() function and interrupt handlers
-          // for buttons interrupt handler
 volatile bool newTimerInterrupt = false;  // for timer interrupt handler
 
 // variables for timer1
@@ -26,28 +25,32 @@ volatile unsigned long currentOCR1A = 15624; // variable to OCR1A, value is incr
 volatile int randArray[300]; // array to store generated numbers
 volatile int arrayIndex = 0; // variable to indicate where to store number in array
 
-
+int points = 0; // Players accumalated points
 
 void setup()
 {
     Serial.begin(9600);
-  interrupts();
+  interrupts(); // Activating interrupts
   initButtonsAndButtonInterrupts();
   initializeDisplay();
-  /*
-    Initialize here all modules
-  */
-  void initializeDisplay(void);
 }
 
 void loop()
 {
 
-      if (buttonNumber != 0) {
-      Serial.print("Painettu nappi: ");
+    if (buttonNumber != 0) {
+    Serial.print("Painettu nappi: ");
     Serial.println(buttonNumber);
+    checkGame (buttonNumber);
     buttonNumber = 0;
     }
+
+    for (int i = 0; i < 200; i++){ // Testing for hardware errors
+      showResult (i);
+      delay(800);
+    }
+
+
   if(buttonNumber>=0)
   {
      // start the game if buttonNumber == 4
@@ -129,10 +132,31 @@ ISR(TIMER1_COMPA_vect)
 }
 
 
-void checkGame(byte nbrOfButtonPush)
+void checkGame(int buttonNumber)
 {
-	// see requirements for the function from SpedenSpelit.h
+
+  int activeLed = randNumber; // Active led
+
+  if (buttonNumber == activeLed) { // Checking if the button pressed is right with the active led
+    Serial.println("Oikea nappi, lisätään piste");
+    points++; // Increments players points by 1 if the button pressed was correct
+    Serial.print("Pisteet: ");
+    Serial.print(points);
+    showResult(points);
+    
+  if (points >= 255){ // Checking if points are
+    Serial.println("Maksimipisteet.");
+    showResult(255);
+    gameOver();
+  }
+  else {// Checking if the button pressed was wrong with the active led
+    Serial.println("Peli ohi!");
+    gameOver(); // Game over
+  }
+  }
 }
+
+
 
 
 void initializeGame()
