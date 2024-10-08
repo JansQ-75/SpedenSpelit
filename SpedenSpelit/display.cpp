@@ -4,7 +4,7 @@ const int STCP_pin = 9; // Arduino pin 12 = latch pin in first shift register
 const int SHCP_pin = 8; // Arduino pin 11 = clock pin in first shift register
 const int STCP_pin2 = 12; // Arduino pin 9 = latch pin in second shift register
 const int SHCP_pin2 = 11; // Arduino pin 8 = clock pin in second shift register
-const int DS_pin2 = 13;
+
 void initializeDisplay(void)
 {
 
@@ -14,9 +14,10 @@ pinMode(DS_pin, OUTPUT);
 pinMode(STCP_pin, OUTPUT);
 pinMode(SHCP_pin, OUTPUT);
   
-pinMode(DS_pin2, OUTPUT);   
+   
 pinMode(STCP_pin2, OUTPUT);
 pinMode(SHCP_pin2, OUTPUT);
+
 }
 
 void writeByte(uint8_t number,bool ten, bool hundred, bool twoHundred)
@@ -139,7 +140,7 @@ void gameOver()
     delay(600); // delay to make reading easier
     // shows the letter in second 7-segment display
     digitalWrite(STCP_pin2,LOW);
-    shiftOut(DS_pin2, SHCP_pin2, LSBFIRST,dec_letters[i]);
+    shiftOut(DS_pin, SHCP_pin2, LSBFIRST,dec_letters[i]);
     digitalWrite(STCP_pin2, HIGH);
   
   }
