@@ -1,32 +1,32 @@
 #include "buttons.h"
 
-volatile int buttonNumber = 0; //
-unsigned long lastDebounceTime = 0; // Debounce aika
-const unsigned long debounceDelay = 200; //debounce viive 200ms
+volatile int buttonNumber = 0; // Variable for buttons
+unsigned long lastDebounceTime = 0; // Debounce time
+const unsigned long debounceDelay = 200; // Debounce delay in ms
 
 
 void initButtonsAndButtonInterrupts(void)
 {
-  for (int i = 2; i < 6; i++) {
+  for (int i = 2; i < 6; i++) { // Setting the buttons to input_pullup mode
     pinMode(i, INPUT_PULLUP);
   }
-    // Aktivoidaan PCINT2 keskeytykset PORTD:lle (pinnit 2-5)
-  PCICR |= (1 << PCIE2); // Pin keskeytykset aktivoidaan
-  PCMSK2 |= B00111100;   // Aktivoidaan PCINT2 pinnit (pinnit 2-5)
+    // Activating PCINT2 interrupts for pins 2-5
+  PCICR |= (1 << PCIE2); // Activating the interrups
+  PCMSK2 |= B00111100;   // Activating the pins 2-5
 }
 
-  ISR(PCINT2_vect) { // PCINT2 keskeytyspalvelu, käsittelee pinnit 2–5 (PORTD)
+  ISR(PCINT2_vect) { //Handles the interrupts for pins 2-5 
 unsigned long currentTime = millis();
  
-  for (int i = 2; i < 6; i++) {    // Tarkistetaan, mikä pinni 2–5 on LOW-tilassa
+  for (int i = 2; i < 6; i++) {    // Checking which of the buttons are in low state
     if (digitalRead(i) == LOW) {
 
-      if ((currentTime - lastDebounceTime) > debounceDelay) { // Varmistetaan, että debounce-aika on kulunut
-         buttonNumber = i;  // Tallennetaan painettu nappi
-        lastDebounceTime = currentTime; // Päivitetään debounce-aika
+      if ((currentTime - lastDebounceTime) > debounceDelay) { // Checking the debounce time
+         buttonNumber = i;  // Saves the button that  has been pressed
+        lastDebounceTime = currentTime; // Updates the debounce time
       }
 
-        break; // Keskeytetään silmukka, kun löydetään painettu nappi
+        break; // Breaks the statement if a button has been pressed.
     }
   }
   }

@@ -4,7 +4,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-extern volatile int buttonNumber;// for buttons,  interrupt handler
+extern volatile int buttonNumber;// Variable for buttons
 const byte firstPin = 2; // First PinChangeInterrupt on D-bus
 const byte lastPin =  5; // Last PinChangeInterrupt on D-bus
 

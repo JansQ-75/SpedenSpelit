@@ -38,8 +38,8 @@ void setup()
 void loop()
 {
 
-    if (buttonNumber != 0) {
-    Serial.print("Painettu nappi: ");
+    if (buttonNumber != 0) { // checking if a button has been pressed
+    Serial.print("Painettu nappi: "); // For debugging with serial montior
     Serial.println(buttonNumber);
     checkGame (buttonNumber);
     buttonNumber = 0;
@@ -132,7 +132,7 @@ ISR(TIMER1_COMPA_vect)
 }
 
 
-void checkGame(int buttonNumber)
+void checkGame(int buttonNumber) //checkGame
 {
 
   int activeLed = randNumber; // Active led
@@ -140,17 +140,18 @@ void checkGame(int buttonNumber)
   if (buttonNumber == activeLed) { // Checking if the button pressed is right with the active led
     Serial.println("Oikea nappi, lisätään piste");
     points++; // Increments players points by 1 if the button pressed was correct
-    Serial.print("Pisteet: ");
+    Serial.print("Pisteet: ");// For debugging with serial montior
     Serial.print(points);
     showResult(points);
     
-  if (points >= 255){ // Checking if points are
-    Serial.println("Maksimipisteet.");
-    showResult(255);
+  if (points >= 255){ // Checking if points are 255, if they are game ends since it's the maximum amount of points.
+    Serial.println("Maksimipisteet.");// For debugging with serial montior
+    showResult(points);
+    delay (1000);
     gameOver();
   }
-  else {// Checking if the button pressed was wrong with the active led
-    Serial.println("Peli ohi!");
+  else {// Checking if the button pressed was wrong with the active led, if it ism then game over
+    Serial.println("Peli ohi!");// For debugging with serial montior
     gameOver(); // Game over
   }
   }
