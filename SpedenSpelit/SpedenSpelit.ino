@@ -93,7 +93,7 @@ ISR(TIMER1_COMPA_vect)
   Increase timer interrupt rate after 10 interrupts.
   */
   // Generate a random number when the interrupt occurs
-  randNumber = random(0, 3);
+  randNumber = random(0, 4);
 
   // stores generated number to array
   randArray[arrayIndex] = randNumber;
@@ -114,7 +114,7 @@ ISR(TIMER1_COMPA_vect)
   */
 
   if (interruptCounter >= 10) {
-    currentOCR1A = (unsigned long)(currentOCR1A * 1.1);  // Increase timers interrupts by 10%
+    currentOCR1A = (unsigned long)(currentOCR1A * 0.9);  // Increase timers interrupts by 10%
 
     // Maximum value for 16-bit register is 65535. We have to ensure the new OCR1A value is within valid range
     if (currentOCR1A < 65536) {
