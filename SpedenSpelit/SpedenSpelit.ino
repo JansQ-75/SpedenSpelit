@@ -30,27 +30,40 @@ volatile int arrayIndex = 0; // variable to indicate where to store number in ar
 
 void setup()
 {
-    Serial.begin(9600);
+  Serial.begin(9600);
   interrupts();
   initButtonsAndButtonInterrupts();
   initializeDisplay();
   /*
     Initialize here all modules
   */
-  void initializeDisplay(void);
+  initializeDisplay();
+  initializeLeds();
+  initButtonsAndButtonInterrupts();
 }
 
 void loop()
 {
-
-      if (buttonNumber != 0) {
-      Serial.print("Painettu nappi: ");
+  
+    /*if (buttonNumber != 0) {
+    Serial.print("Painettu nappi: ");
     Serial.println(buttonNumber);
     buttonNumber = 0;
+    }*/
+    showResult(51);
+    delay(1000);
+    if (buttonNumber == 2) {
+      startTheGame();
     }
+    
+
+
+    
+    
   if(buttonNumber>=0)
   {
      // start the game if buttonNumber == 4
+     
      // check the game if 0<=buttonNumber<4
   }
 
@@ -61,6 +74,7 @@ void loop()
       setLed(randNumber); // active the random led
      newTimerInterrupt = false; //reset the flag (boolean to false)
   }
+  
 }
 
 void initializeTimer(void)
@@ -91,6 +105,8 @@ ISR(TIMER1_COMPA_vect)
   */
   // Generate a random number when the interrupt occurs
   randNumber = random(0, 3);
+  Serial.print("Sytytettävän ledin nro: ");
+  Serial.println(randNumber);
 
   // stores generated number to array
   randArray[arrayIndex] = randNumber;
@@ -102,6 +118,8 @@ ISR(TIMER1_COMPA_vect)
   if (arrayIndex > 300) {
     arrayIndex = 0;
   }
+  Serial.println("interrupt count is ");
+  Serial.println(interruptCounter);
 
   // Increments counter by 1
   interruptCounter++;
@@ -110,8 +128,8 @@ ISR(TIMER1_COMPA_vect)
   Also sets interruptCounter back to 0.
   */
 
-  if (interruptCounter >= 10) {
-    currentOCR1A = (unsigned long)(currentOCR1A * 1.1);  // Increase timers interrupts by 10%
+  if (interruptCounter > 10) {
+    currentOCR1A = (unsigned long)(currentOCR1A * 0.9);  // Increase timers interrupts by 10%
 
     // Maximum value for 16-bit register is 65535. We have to ensure the new OCR1A value is within valid range
     if (currentOCR1A < 65536) {
@@ -148,6 +166,7 @@ void initializeGame()
 
 void startTheGame()
 {
-   // see requirements for the function from SpedenSpelit.h
+  initializeGame(); // initializes all variables needed to store random numbers and player button push data
+  initializeTimer(); // intializes timer1 and enables interrupts
 }
 
