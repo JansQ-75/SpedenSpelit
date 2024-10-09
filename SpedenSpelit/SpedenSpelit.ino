@@ -3,19 +3,7 @@
 #include "leds.h"
 #include "SpedenSpelit.h"
 // Digitalpins for shift registers
-const int STCP_pin2 = 12; // Arduino pin 9 = latch pin in second shift register
-const int SHCP_pin2 = 11; // Arduino pin 8 = clock pin in second shift register
-const int DS_pin = 10; // Arduino pin 13 = input pin in first shift register
-const int STCP_pin = 9; // Arduino pin 12 = latch pin in first shift register
-const int SHCP_pin = 8; // Arduino pin 11 = clock pin in first shift register
 
-// Digitalpins for buttons
-
-// Analogpins for leds
-
-
-// Use these 2 volatile variables for communicating between
-// loop() function and interrupt handlers
 volatile bool newTimerInterrupt = false;  // for timer interrupt handler
 
 // variables for timer1
@@ -42,20 +30,15 @@ void loop()
     Serial.print("Painettu nappi: "); // For debugging with serial montior
     Serial.println(buttonNumber);
     checkGame (buttonNumber);
-    buttonNumber = 0;
+    buttonNumber = 0; // Sets button back to 0
     }
 
-    for (int i = 0; i < 200; i++){ // Testing for hardware errors
+    for (int i = 0; i < 255; i++){ // Testing for hardware errors
       showResult (i);
       delay(800);
     }
 
 
-  if(buttonNumber>=0)
-  {
-     // start the game if buttonNumber == 4
-     // check the game if 0<=buttonNumber<4
-  }
 
   if(newTimerInterrupt == true)
   {
@@ -151,12 +134,14 @@ void checkGame(int buttonNumber) //checkGame
     delay (1000);
     textGameOver();
   }
-  else {// Checking if the button pressed was wrong with the active led, if it ism then game over
+
+  }
+  else {// Checking if the button pressed was wrong with the active led, if it is then game over
     Serial.println("Peli ohi!");// For debugging with serial montior
     textGameOver(); // Game over
   }
   }
-}
+
 
 
 
