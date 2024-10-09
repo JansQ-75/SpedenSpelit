@@ -125,7 +125,7 @@ void showResult(byte result)
 
 }
 
-void gameOver()
+void textGameOver()
 {
   uint8_t dec_letters [16] {14, 29, 91, 79, 5, 128, 128, 128, 91, 79, 79, 0, 51, 119, 0, 0}; // decimals indicating text "LOSER...SEE(blank)YA(blank)(blank)" to shift register
 

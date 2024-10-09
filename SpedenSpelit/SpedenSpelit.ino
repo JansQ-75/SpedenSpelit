@@ -62,6 +62,18 @@ void loop()
      // new random number must be generated
      // and corresponding let must be activated
       setLed(randNumber); // active the random led
+      /*
+      // stores generated number to array
+  randArray[arrayIndex] = randNumber;
+  
+  // Increments arrayIndex by 1
+  arrayIndex++;
+
+  // resets arrayIndex if 300 has been reached
+  if (arrayIndex > 300) {
+    arrayIndex = 0;
+  }
+  */
      newTimerInterrupt = false; //reset the flag (boolean to false)
   }
 }
@@ -94,17 +106,6 @@ ISR(TIMER1_COMPA_vect)
   */
   // Generate a random number when the interrupt occurs
   randNumber = random(0, 4);
-
-  // stores generated number to array
-  randArray[arrayIndex] = randNumber;
-  
-  // Increments arrayIndex by 1
-  arrayIndex++;
-
-  // resets arrayIndex if 300 has been reached
-  if (arrayIndex > 300) {
-    arrayIndex = 0;
-  }
 
   // Increments counter by 1
   interruptCounter++;
@@ -148,11 +149,11 @@ void checkGame(int buttonNumber) //checkGame
     Serial.println("Maksimipisteet.");// For debugging with serial montior
     showResult(points);
     delay (1000);
-    gameOver();
+    textGameOver();
   }
   else {// Checking if the button pressed was wrong with the active led, if it ism then game over
     Serial.println("Peli ohi!");// For debugging with serial montior
-    gameOver(); // Game over
+    textGameOver(); // Game over
   }
   }
 }
