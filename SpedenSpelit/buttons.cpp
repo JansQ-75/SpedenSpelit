@@ -10,9 +10,11 @@ void initButtonsAndButtonInterrupts(void)
   for (int i = 2; i < 6; i++) { // Setting the buttons to input_pullup mode
     pinMode(i, INPUT_PULLUP);
   }
+  cli(); // stops interrupts
     // Activating PCINT2 interrupts for pins 2-5
   PCICR |= (1 << PCIE2); // Activating the interrups
   PCMSK2 |= B00111100;   // Activating the pins 2-5
+  sei(); // allows interrupts
 }
 
   ISR(PCINT2_vect) { //Handles the interrupts for pins 2-5 
@@ -26,7 +28,7 @@ unsigned long currentTime = millis();
         lastDebounceTime = currentTime; // Updates the debounce time
       }
 
-        break; // Breaks the statement if a button has been pressed.
+        break; // Breaks if a button has been pressed.
     }
   }
   }
