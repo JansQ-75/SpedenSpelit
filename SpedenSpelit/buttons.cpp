@@ -24,7 +24,10 @@ unsigned long currentTime = millis();
     if (digitalRead(i) == LOW) {
 
       if ((currentTime - lastDebounceTime) > debounceDelay) { // Checking the debounce time
-         buttonNumber = i;  // Saves the button that  has been pressed
+         buttonNumber = i - 2;  // Saves the button that  has been pressed
+
+         Serial.print("Painettu nappi");
+         Serial.println(buttonNumber);
         lastDebounceTime = currentTime; // Updates the debounce time
       }
 

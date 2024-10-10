@@ -19,7 +19,7 @@ void initializeLeds();
   parameters:
   byte ledNumber is 0,1,2 or 3
 */
-void setLed(byte ledNumber);
+void setLed(int ledNumber);
 
 /*
   clearAllLeds(void) subroutine clears all leds
@@ -48,4 +48,6 @@ void show1(void);
 */
 void show2(int);
 
+
+void setRandomLed();
 #endif
