@@ -7,6 +7,11 @@
 volatile bool newTimerInterrupt = false;  // for timer interrupt handler
 volatile bool gameChecked = true;
 
+volatile int randArray[300]; // array to store generated numbers
+volatile int arrayIndex = 0; // variable to indicate where to store number in array
+volatile int buttonsPushed[300]; // array to store data of buttons pushed
+volatile int buttonIndex = 0;
+
 // variables for timer1
 volatile int randNumber = 0; // variable for random numbers generated with timer1
 volatile int interruptCounter = 0; // variable to count amount of interrupts
@@ -17,7 +22,7 @@ int points = 0; // Players accumalated points
 
 void setup()
 {
-    Serial.begin(9600);
+  Serial.begin(9600);
   interrupts(); // Allowing interrupts
   initButtonsAndButtonInterrupts(); // Initializing buttons and button interrupts
   initializeDisplay(); // Initializing display
@@ -57,7 +62,7 @@ void loop()
     {
       sei(); // allows interrupts and game continues
     }
-    }
+    
     else 
       {
         // peli päättyy
@@ -73,7 +78,6 @@ void loop()
   
   clearAllLeds();
   delay(300);
-  show2();
   
 
     if (buttonNumber != 0) { // checking if a button has been pressed
@@ -160,7 +164,7 @@ void checkGame(int buttonNumber) //checkGame
       showResult(points);
       delay (1000);
       textGameOver();
-      gameChecked = false // Set flag to notify loop() that game is over
+      gameChecked = false; // Set flag to notify loop() that game is over
     }
 
     gameChecked = true; // Set flag to notify loop() that game can continue
@@ -169,7 +173,7 @@ void checkGame(int buttonNumber) //checkGame
   else {// Checking if the button pressed was wrong with the active led, if it is then game over
     Serial.println("Peli ohi!");// For debugging with serial montior
     textGameOver(); // Game over
-    gameChecked = false // Set flag to notify loop() that game is over
+    gameChecked = false; // Set flag to notify loop() that game is over
   }
   }
 
@@ -182,17 +186,14 @@ void initializeGame()
 	/*initializeGame() subroutine is used to initialize all variables
   needed to store random numbers and player button push data.
   This function is called from startTheGame() function.*/
-  volatile int randArray[300]; // array to store generated numbers
-  volatile int arrayIndex = 0; // variable to indicate where to store number in array
-  volatile int buttonsPushed [300]; // array to store data of buttons pushed
-  volatile int buttonIndex = 0;
+  
   volatile int score; // score of right button clicks. This is send to function 'void showResult(byte result)'
   volatile bool rightButton = true; // boolean to be used as flag for the loop. When false: Indicates the player pushes wrong button
 }
 
 void startTheGame()
 {
-  InitializeGame();
+  initializeGame();
   clearAllLeds();
   setAllLeds();
   delay(1500);
@@ -205,13 +206,15 @@ void buttonPressed()
   for (int i = 2; i < 6; i++) {    // Checking which of the buttons are in low state
     if (digitalRead(i) == LOW) {
       // stores number of pressed button to array
-      buttonsPushed[buttonsIndex] = i;
+      buttonsPushed[buttonIndex] = i;
       // Increments arrayIndex by 1
-      buttonsIndex++;
+      buttonIndex++;
+    }
     // resets buttonsIndex if 300 has been reached
-    if (buttonsIndex > 300)
+    if (buttonIndex > 300)
       {
-      buttonsIndex = 0;
+      buttonIndex = 0;
       }
+  }
 }
 
