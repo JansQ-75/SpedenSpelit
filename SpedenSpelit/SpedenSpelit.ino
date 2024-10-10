@@ -155,6 +155,15 @@ ISR(TIMER1_COMPA_vect)
   // Set flag to notify loop() that new random number is ready
   newTimerInterrupt = true;
   
+      // stores generated number to array
+   // randArray[arrayIndex] = randNumber;
+    // Increments arrayIndex by 1
+    //arrayIndex++;
+    // resets arrayIndex if 300 has been reached
+    //if (arrayIndex > 300)
+      //{
+      //arrayIndex = 0;
+    //  }
 }
 
 
