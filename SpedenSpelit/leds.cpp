@@ -4,18 +4,21 @@
   // // Määritellään LEDien pinnit
 const int ledPins[] = {A2, A3, A4, A5}; // LEDit kytketty analogiapinneihin A2-A5
 int currentLed = 0;  // Tietoa siitä, mikä LED on tällä hetkellä päällä
-
+volatile int randNumber = 0;
 // Alustetaan LEDit
 void initializeLeds() {
-  for (int i = 2; i < 6; i++) {
+  for (int i = 0; i < 4; i++) {
         pinMode(ledPins[i], OUTPUT);
     }
 }
 
 void setRandomLed() {
   clearAllLeds(); // Sammutetaan kaikki LEDit ensin
-  int randNumber = random(0, 4); // Valitaan satunnainen LED
+  randNumber = random(0, 4); // Valitaan satunnainen LED
   setLed(randNumber); // Sytytetään satunnainen LED
+  delay(2000);
+  Serial.println("led.cpp numero:   ");
+  Serial.print(randNumber);
   delay (2000);
 
 }

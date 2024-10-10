@@ -13,7 +13,7 @@ volatile int buttonsPushed[300]; // array to store data of buttons pushed
 volatile int buttonIndex = 0;
 
 // variables for timer1
-volatile int randNumber = 0; // variable for random numbers generated with timer1
+
 volatile int interruptCounter = 0; // variable to count amount of interrupts
 volatile unsigned long currentOCR1A = 15624; // variable to OCR1A, value is increased after 10 interrupts
 
@@ -22,6 +22,8 @@ bool isButtonPressed = false;
 bool gameStarted = false;
 bool ledActive = false;
   volatile int score; // score of right button clicks. This is send to function 'void showResult(byte result)'
+
+  unsigned long ledOnTime = 0;
 void setup()
 {
   Serial.begin(9600);
@@ -46,6 +48,7 @@ void loop()
     if (millis() - buttonPressTime >= 1000 && !gameStarted) {
       // Käynnistetään peli, jos nappia on pidetty 1s
       Serial.println("Peli alkaa!");
+      blinkLeds();
       startTheGame(); // Käynnistetään peli
       initializeTimer(); // Ajastin alkaa
       gameStarted = true; // Merkitään, että peli on aloitettu
@@ -55,36 +58,10 @@ void loop()
     // Jos nappia ei paineta, nollataan tilat
     isButtonPressed = false;
   }
-
-  // aloitetaan peli
-  //ledi syttyy generoidun numeron perusteella
-  if (gameStarted) {
-  if(newTimerInterrupt == true)
-    {
-      setRandomLed();
-      Serial.print("LEDI PÄÄLLÄ: ");
-      Serial.println(randNumber);
-      ledActive = true;
-      newTimerInterrupt = false;
-  }
- // Tarkistetaan, onko pelaaja painanut nappia, kun LED on aktiivinen
-    if (ledActive && buttonNumber != 0) { 
-      checkGame(buttonNumber); // Tarkistetaan, oliko oikea nappi
-      ledActive = false;       // Nollataan LED-tila, koska nappia painettiin
-
-      if (gameChecked) {
-        score++; // Lisätään piste, jos nappi oli oikea
-        Serial.print("Pisteet: ");
-        Serial.println(score);
-      } else {
-        Serial.println("Peli ohi");
-        textGameOver(); // Pelin loppu
-        gameStarted = false; // Nollataan pelin tila
-      }
-
-      // Nollataan painetun napin numero
-      buttonNumber = 0;
+    if (gameStarted){
+      checkGame();
     }
+  // aloitetaan peli
 
   }
   // painetaan nappia
@@ -94,14 +71,7 @@ void loop()
 
   // nollataan kaikki? Alustetaan peli uudelleen?
 
-  clearAllLeds();
-  delay(300);
   
-  clearAllLeds();
-  delay(300);
-  
-  
-}
 
 void initializeTimer(void)
 {
@@ -130,8 +100,6 @@ ISR(TIMER1_COMPA_vect)
   Increase timer interrupt rate after 10 interrupts.
   */
   // Generate a random number when the interrupt occurs
-  randNumber = random(0, 4);
-
   // Increments counter by 1
   interruptCounter++;
 
@@ -167,21 +135,59 @@ ISR(TIMER1_COMPA_vect)
 }
 
 
-void checkGame(int pressedButton) //checkGame
+void checkGame() //checkGame
 {
-
-
-  if (pressedButton == randNumber) { // Checking if the button pressed is right with the active led
-    gameChecked = true;    
-    }
-
-  else {// Checking if the button pressed was wrong with the active led, if it is then game over
-    Serial.println("Peli ohi!");// For debugging with serial montior
-    gameChecked = false; // Set flag to notify loop() that game is over
+    //ledi syttyy generoidun numeron perusteella
+  if (gameStarted){
+  if(newTimerInterrupt == true)
+    {
+      setRandomLed();
+      Serial.print(" Led numero.ino :   ");
+      Serial.println(randNumber);
+      ledOnTime = millis();
+      ledActive = true;
+      newTimerInterrupt = false;
   }
+ // Tarkistetaan, onko pelaaja painanut nappia, kun LED on aktiivinen
+    if (ledActive && buttonNumber != -1) { 
+      if (buttonNumber == randNumber){
+        score++;
+        Serial.print("Pisteet: ");
+        Serial.print(score);
+        clearAllLeds();
+        showResult(score);
+      }
+      else {
+        gameOver();
+
+      }
+    }
+   if (ledActive && millis() - ledOnTime > 3000){
+     gameOver();
+   }
+}
+}
+void gameOver(){
+        Serial.print("Peli ohi...");
+        textGameOver();
+        clearAllLeds();
+        gameStarted = false;
+        score = 0;
+}
+
+void startTheGame(){
+  initializeGame();
+  score = 0;
 }
   
-
+void blinkLeds(){
+  for(int i = 0; i<3; i++){
+    setAllLeds();
+    delay(500);
+    clearAllLeds();
+    delay(1500);
+  }
+}
 
 
 
@@ -192,19 +198,11 @@ void initializeGame()
   needed to store random numbers and player button push data.
   This function is called from startTheGame() function.*/
   
-
+score = 0;
+gameStarted = true;
   volatile bool rightButton = true; // boolean to be used as flag for the loop. When false: Indicates the player pushes wrong button
 }
 
-void startTheGame()
-{
-  initializeGame();
-  clearAllLeds();
-  setAllLeds();
-  delay(1500);
-  clearAllLeds();
-  delay(300);
-}
 // function to read which button is pressed and to store it to array
 void buttonPressed()
 {

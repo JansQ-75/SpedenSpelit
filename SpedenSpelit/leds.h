@@ -2,6 +2,9 @@
 #define LEDS_H
 #include <arduino.h>
 
+
+
+extern volatile int randNumber; // variable for random numbers generated with timer1
 /*
   initializeLeds() subroutine intializes analog pins A2,A3,A4,A5
   to be used as outputs. Speden Spelit leds are connected to those
