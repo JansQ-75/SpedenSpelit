@@ -5,33 +5,72 @@
 // Digitalpins for shift registers
 
 volatile bool newTimerInterrupt = false;  // for timer interrupt handler
+volatile bool gameChecked = true;
 
 // variables for timer1
 volatile int randNumber = 0; // variable for random numbers generated with timer1
 volatile int interruptCounter = 0; // variable to count amount of interrupts
 volatile unsigned long currentOCR1A = 15624; // variable to OCR1A, value is increased after 10 interrupts
-/*volatile int randArray[300]; // array to store generated numbers
-volatile int arrayIndex = 0; // variable to indicate where to store number in array*/
+
 
 int points = 0; // Players accumalated points
 
 void setup()
 {
     Serial.begin(9600);
-  interrupts(); // Activating interrupts
-  initButtonsAndButtonInterrupts();
-  initializeDisplay();
-  initializeLeds();
+  interrupts(); // Allowing interrupts
+  initButtonsAndButtonInterrupts(); // Initializing buttons and button interrupts
+  initializeDisplay(); // Initializing display
+  initializeLeds(); // Initializing leds
 
 }
 
 void loop()
 {
+  // Jos painetaan nappia 2s
+  // aloitetaan peli
+  startTheGame(); //peli alkaa: ledit syttyvät x ajaksi, sammuvat
+  initializeTimer(); // timer alkaa
+  //ledi syttyy generoidun numeron perusteella
+  if(newTimerInterrupt == true)
+    {
+    // new random number must be generated
+    setLed(randNumber); // active the random led
+    // stores generated number to array
+    randArray[arrayIndex] = randNumber;
+    // Increments arrayIndex by 1
+    arrayIndex++;
+    // resets arrayIndex if 300 has been reached
+    if (arrayIndex > 300)
+      {
+      arrayIndex = 0;
+      }
+    newTimerInterrupt = false; //reset the flag (boolean to false)
+  }
+
+  // painetaan nappia
+  // oliko oikea nappi? Kyllä: lisätään +1 näytölle --> 10x oikein generointi nopeutuu (tämä jo timerissa sisällä)
+  cli();
+  checkGame();
+  
+  if (gameChecked == true)
+    {
+      sei(); // allows interrupts and game continues
+    }
+    }
+    else 
+      {
+        // peli päättyy
+        // ei ollut oikea nappi: peli päättyy, kaikki ledit vilkkuvat, textGameOver, näytetään loppupisteet
+      }
+
+  // jos nappia ei paineta 5s sisään, peli päättyy, kaikki ledit vilkkuvat, textGameOver, näytetään loppupisteet
+
+  // nollataan kaikki? Alustetaan peli uudelleen?
 
   clearAllLeds();
   delay(300);
-  setAllLeds();
-  delay(300);
+  
   clearAllLeds();
   delay(300);
   show2();
@@ -46,25 +85,7 @@ void loop()
 
 
 
-  if(newTimerInterrupt == true)
-  {
-     // new random number must be generated
-     // and corresponding let must be activated
-      //setLed(randNumber); // active the random led
-      /*
-      // stores generated number to array
-  randArray[arrayIndex] = randNumber;
   
-  // Increments arrayIndex by 1
-  arrayIndex++;
-
-  // resets arrayIndex if 300 has been reached
-  if (arrayIndex > 300) {
-    arrayIndex = 0;
-  }
-  */
-     newTimerInterrupt = false; //reset the flag (boolean to false)
-  }
 }
 
 void initializeTimer(void)
@@ -134,17 +155,21 @@ void checkGame(int buttonNumber) //checkGame
     Serial.print(points);
     showResult(points);
     
-  if (points >= 255){ // Checking if points are 255, if they are game ends since it's the maximum amount of points.
-    Serial.println("Maksimipisteet.");// For debugging with serial montior
-    showResult(points);
-    delay (1000);
-    textGameOver();
-  }
+    if (points >= 255){ // Checking if points are 255, if they are game ends since it's the maximum amount of points.
+      Serial.println("Maksimipisteet.");// For debugging with serial montior
+      showResult(points);
+      delay (1000);
+      textGameOver();
+      gameChecked = false // Set flag to notify loop() that game is over
+    }
+
+    gameChecked = true; // Set flag to notify loop() that game can continue
 
   }
   else {// Checking if the button pressed was wrong with the active led, if it is then game over
     Serial.println("Peli ohi!");// For debugging with serial montior
     textGameOver(); // Game over
+    gameChecked = false // Set flag to notify loop() that game is over
   }
   }
 
@@ -157,14 +182,36 @@ void initializeGame()
 	/*initializeGame() subroutine is used to initialize all variables
   needed to store random numbers and player button push data.
   This function is called from startTheGame() function.*/
-  volatile int activatedLeds [300]; // array to store data of generated numbers aka activated leds
+  volatile int randArray[300]; // array to store generated numbers
+  volatile int arrayIndex = 0; // variable to indicate where to store number in array
   volatile int buttonsPushed [300]; // array to store data of buttons pushed
+  volatile int buttonIndex = 0;
   volatile int score; // score of right button clicks. This is send to function 'void showResult(byte result)'
   volatile bool rightButton = true; // boolean to be used as flag for the loop. When false: Indicates the player pushes wrong button
 }
 
 void startTheGame()
 {
-   // see requirements for the function from SpedenSpelit.h
+  InitializeGame();
+  clearAllLeds();
+  setAllLeds();
+  delay(1500);
+  clearAllLeds();
+  delay(300);
+}
+// function to read which button is pressed and to store it to array
+void buttonPressed()
+{
+  for (int i = 2; i < 6; i++) {    // Checking which of the buttons are in low state
+    if (digitalRead(i) == LOW) {
+      // stores number of pressed button to array
+      buttonsPushed[buttonsIndex] = i;
+      // Increments arrayIndex by 1
+      buttonsIndex++;
+    // resets buttonsIndex if 300 has been reached
+    if (buttonsIndex > 300)
+      {
+      buttonsIndex = 0;
+      }
 }
 
