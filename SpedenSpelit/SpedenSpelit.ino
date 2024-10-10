@@ -10,8 +10,8 @@ volatile bool newTimerInterrupt = false;  // for timer interrupt handler
 volatile int randNumber = 0; // variable for random numbers generated with timer1
 volatile int interruptCounter = 0; // variable to count amount of interrupts
 volatile unsigned long currentOCR1A = 15624; // variable to OCR1A, value is increased after 10 interrupts
-volatile int randArray[300]; // array to store generated numbers
-volatile int arrayIndex = 0; // variable to indicate where to store number in array
+/*volatile int randArray[300]; // array to store generated numbers
+volatile int arrayIndex = 0; // variable to indicate where to store number in array*/
 
 int points = 0; // Players accumalated points
 
@@ -21,10 +21,21 @@ void setup()
   interrupts(); // Activating interrupts
   initButtonsAndButtonInterrupts();
   initializeDisplay();
+  initializeLeds();
+
 }
 
 void loop()
 {
+
+  clearAllLeds();
+  delay(300);
+  setAllLeds();
+  delay(300);
+  clearAllLeds();
+  delay(300);
+  show2();
+  
 
     if (buttonNumber != 0) { // checking if a button has been pressed
     Serial.print("Painettu nappi: "); // For debugging with serial montior
@@ -33,18 +44,13 @@ void loop()
     buttonNumber = 0; // Sets button back to 0
     }
 
-    for (int i = 0; i < 255; i++){ // Testing for hardware errors
-      showResult (i);
-      delay(800);
-    }
-
 
 
   if(newTimerInterrupt == true)
   {
      // new random number must be generated
      // and corresponding let must be activated
-      setLed(randNumber); // active the random led
+      //setLed(randNumber); // active the random led
       /*
       // stores generated number to array
   randArray[arrayIndex] = randNumber;

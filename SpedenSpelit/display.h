@@ -65,6 +65,6 @@ void showResult(byte result);
   Function writes text "Loser...see ya" to 7-segment display. 
   Text is shown letter by letter.
 */
-void gameOver();
+void textGameOver();
 
 #endif
