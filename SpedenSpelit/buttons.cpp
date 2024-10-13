@@ -1,6 +1,5 @@
 #include "buttons.h"
-
-volatile int buttonNumber = 0; // Variable for buttons
+volatile int buttonNumber;
 unsigned long lastDebounceTime = 0; // Debounce time
 const unsigned long debounceDelay = 200; // Debounce delay in ms
 
@@ -25,10 +24,9 @@ unsigned long currentTime = millis();
 
       if ((currentTime - lastDebounceTime) > debounceDelay) { // Checking the debounce time
          buttonNumber = i - 2;  // Saves the button that  has been pressed
-
-         Serial.print("Painettu nappi");
-         Serial.println(buttonNumber);
         lastDebounceTime = currentTime; // Updates the debounce time
+        Serial.print("Button pressed in ISR: ");
+        Serial.println(buttonNumber);
       }
 
         break; // Breaks if a button has been pressed.

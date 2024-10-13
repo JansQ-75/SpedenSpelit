@@ -51,6 +51,7 @@ void show1(void);
 */
 void show2(int);
 
+void shutLed (int);
 
 void setRandomLed();
 #endif
