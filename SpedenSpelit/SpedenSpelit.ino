@@ -112,11 +112,11 @@ ISR(TIMER1_COMPA_vect)
 }
 
 
-void checkGame(byte lastButtonPressed) //checkGame
+void checkGame(int buttonNumber) //checkGame
 {
-  buttonsPushed[score] = lastButtonPressed; // stores the button pressed
+  buttonsPushed[score] = buttonNumber; // stores the button pressed
          Serial.print("Painettu nappi");
-         Serial.println(lastButtonPressed);
+         Serial.println(buttonNumber);
   if (buttonsPushed[score] == ledArray[score]){ // comparing the pressed button with the led
     shutLed(buttonsPushed[score]); // turn off the correct led
     score++; //increments score
@@ -124,9 +124,9 @@ void checkGame(byte lastButtonPressed) //checkGame
     Serial.println(score);
     showResult(score); // update display with current score
   }
-  else{ // Wrong button press equals gameover
+  /*else{ // Wrong button press equals gameover
     gameOver();
-  }
+  }*/
 }
 
 void gameOver(){
@@ -162,12 +162,11 @@ void initializeGame()
 } 
 
 void buttonPressed(){
-  if (ledActive && buttonNumber >= 0 && buttonNumber <4 ){ //Check if a valid button is pressed and that the leds are active
+  if (ledActive && digitalRead(2) == LOW || digitalRead(3) == LOW || digitalRead(4) == LOW || digitalRead(5) == LOW ){ //Check if a valid button is pressed and that the leds are active
    Serial.print("Button pressed: ");
         Serial.println(buttonNumber);
 
     checkGame(buttonNumber); //check if the pressed button is correct
-    buttonIndex++; //increments the buttonindex by 1
   }
   }
 
