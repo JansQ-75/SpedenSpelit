@@ -36,6 +36,9 @@ void setup()
 
 void loop()
 {
+  if (!gameStarted) {
+    setLed(0);
+  }
   if (digitalRead(2) == LOW) { // Check if button 0 (analog 2) is being pressed to start the game
     if (!isButtonPressed) {
       buttonPressTime = millis(); // If the button hasn't yet been pressed save the starting time of press
