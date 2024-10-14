@@ -22,7 +22,7 @@ bool isButtonPressed = false;
 bool gameStarted = false;
 bool ledActive = false;
 volatile int score = 0; // score of right button clicks. This is send to function 'void showResult(byte result)'
-int playerButton = 5;
+int playerButton;
 
 void setup()
 {
@@ -55,21 +55,16 @@ void loop()
 
     if (newTimerInterrupt){
     ledArray[arrayIndex] = randomLed; // stores random number to ledArray
+    /*Serial.print("ledi taulukkoon talletetaan: ");
+    Serial.println(ledArray[arrayIndex]);*/
     arrayIndex++; //increments arrayIndex by 1
     setLed(randomLed); //lights up the led
     Serial.print("LED numero:  ");  // Debugging statement
     Serial.println(randomLed);
-    Serial.println(arrayIndex);
-    Serial.println(ledArray[arrayIndex]);
-    /*if (arrayIndex == 1) {
-      Serial.println("Ledit valmiina.");
-    }
-    if (arrayIndex == 2) {
-      Serial.println("ledArray 2");
-    }*/
     ledActive = true; // set ledactive to ttrue when the first led is active
     newTimerInterrupt = false;
     }
+
     if (gameStarted) {
       if (playerPressedButton) {
     checkGame(buttonNumber); // If the game has been started starts checking buttonpresses
@@ -142,9 +137,10 @@ void checkGame(int playerButton) //checkGame
     Serial.println(score);
     showResult(score); // update display with current score
   }
-  /*else{ // Wrong button press equals gameover
+  else { // Wrong button press equals gameover
     gameOver();
-  }*/
+  }
+  
 }
 
 void gameOver(){
@@ -152,6 +148,9 @@ void gameOver(){
         textGameOver(); // display game over text
         clearAllLeds(); // clear leds
         gameStarted = false; // reset game state
+        cli(); //stop timer
+        isButtonPressed = false; // palataan alkuun
+        sei();
 }
 
 void startTheGame(){
@@ -176,6 +175,8 @@ void initializeGame()
   showResult (0); // Show starting score 0
   clearAllLeds(); // Clears leds
   buttonIndex = 0;
+  playerPressedButton = false;
+
 
 } 
 

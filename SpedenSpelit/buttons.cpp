@@ -1,7 +1,7 @@
 #include "buttons.h"
 volatile int buttonNumber;
 unsigned long lastDebounceTime = 0; // Debounce time
-const unsigned long debounceDelay = 200; // Debounce delay in ms
+const unsigned long debounceDelay = 500; // Debounce delay in ms
 
 
 void initButtonsAndButtonInterrupts(void)
@@ -27,8 +27,9 @@ unsigned long currentTime = millis();
         lastDebounceTime = currentTime; // Updates the debounce time
         Serial.print("Button pressed in ISR: ");
         Serial.println(buttonNumber);
+        playerPressedButton = true;
       }
-      playerPressedButton = true;
+      
 
         break; // Breaks if a button has been pressed.
     }
