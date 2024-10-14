@@ -28,6 +28,7 @@ unsigned long currentTime = millis();
         Serial.print("Button pressed in ISR: ");
         Serial.println(buttonNumber);
       }
+      playerPressedButton = true;
 
         break; // Breaks if a button has been pressed.
     }
