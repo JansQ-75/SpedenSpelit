@@ -29,8 +29,6 @@ void setLed(int ledNumber) {
 
   }
 
-
-
   void shutLed(int ledNumber){
     if (ledNumber == 0){
       digitalWrite(A2, LOW);
@@ -59,6 +57,15 @@ void setAllLeds() {
    for (int i = 0; i < 4; i++) {
         digitalWrite(ledPins[i], HIGH);
     }
+}
+
+void blinkLeds(){ // blinks all leds for 0.5 seconds and then turns all leds off for 1.5seconds
+  for(int i = 0; i<3; i++){
+    setAllLeds();
+    delay(500);
+    clearAllLeds();
+    delay(1000);
+  }
 }
 
 // Näyttää yksinkertaisen valoshown ennen peliä

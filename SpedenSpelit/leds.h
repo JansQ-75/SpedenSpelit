@@ -54,4 +54,6 @@ void show2(int);
 void shutLed (int);
 
 void setRandomLed();
+
+void blinkLeds();
 #endif
