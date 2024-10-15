@@ -1,7 +1,7 @@
 # SpedenSpelit_Ryhma26
-School project
+**SCHOOL PROJECT**
 
-Project name: SpedenSpelit
+**Project name: SpedenSpelit**
 
     in the 90's in Finland ther was a gameshow on tv called SpedenSpelit. 
     In this gameshow Nopeustesti -game was introduced to public. 
@@ -9,7 +9,7 @@ Project name: SpedenSpelit
     LED buttons are lit randomly and player must press the right button in order to continue the game. 
     As the game progresses, LEDs light up faster and the game comes more difficult.
 
-Project goals:
+**Project goals:**
 
     Main goal for the project is to make our own version of the SpedenSpelit reaction game. 
     We are using Arduino UNO microcontroller for the game. 
@@ -18,7 +18,7 @@ Project goals:
     The code consists of four modules: buttons, leds, display and gamelogic. 
     We need to integrate these modules to get a working game.
 
-Hardware:
+**Hardware:**
 
     For the game we had these components:
 
@@ -64,7 +64,7 @@ Hardware:
 
     7-segment common cathode pin was connected to ground.
 
-Software:
+**Software:**
 
     Coding was done by using Arduino IDE.
     We were given baseline code for the project. 
@@ -103,7 +103,7 @@ Software:
             -void startTheGame(void);
             -void gameOver();
 
-Project outcome:
+**Project outcome:**
 
     [Game_at_starting_state](https://github.com/user-attachments/assets/2be4f096-c502-40b6-81a0-f847f535b59e)
 
@@ -117,7 +117,7 @@ Project outcome:
     After game over, the game returns to the starting state and player can start a new game.
 
 
-Areas of responsibility:
+**Areas of responsibility:**
 
     Janina Niemelä
         -Display module
@@ -128,7 +128,7 @@ Areas of responsibility:
     All team members
         -Gamelogic
 
-Sources:
+**Sources:**
 
     Arduino forum
         https://forum.arduino.cc/
