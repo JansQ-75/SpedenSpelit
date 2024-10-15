@@ -35,11 +35,13 @@ Hardware:
 
     Buttons were connected to Arduino UNO digital pins 2-5.
 
-    First shift register's clock pin was connected to Arduino UNO digital pin 8, 
+    First shift register's 
+    clock pin was connected to Arduino UNO digital pin 8, 
     latch pin to digital pin 9 and 
     input pin to digital pin 10.
 
-    Second shift register's clock pin was connected to digital pin 11, 
+    Second shift register's
+    clock pin was connected to digital pin 11, 
     latch pin to digital pin 12 and 
     input pin to digital pin 10 (same as first shift register).
 
@@ -60,6 +62,7 @@ Hardware:
     7-segment common cathode pin was connected to ground.
 
 Software:
+
     Coding was done by using Arduino IDE.
     We were given baseline code for the project. 
     This code consisted of four modules; leds, buttons, display and gamelogic. 
@@ -99,10 +102,10 @@ Software:
 
 Project outcome:
 
-    ![Game_at_starting_state](20241015_205320.jpg)
-    
-    The project was a success. 
-    We were able to fully replicate the SpedenSpelit Nopeustesti game, 
+    [20241015_205320](https://github.com/user-attachments/assets/2be4f096-c502-40b6-81a0-f847f535b59e)
+
+    The project was succesful. 
+    We were able to replicate the SpedenSpelit Nopeustesti game, 
     integrating all the hardware components on a breadboard and 
     ensuring the software operated as intended. 
     The game responds to player inputs via the buttons, 
@@ -112,6 +115,7 @@ Project outcome:
 
 
 Areas of responsibility:
+
     Janina Niemelä
         -Display module
     Samu Hintsala
@@ -123,10 +127,12 @@ Areas of responsibility:
 
 Sources:
 
-Arduino forum
-    https://forum.arduino.cc/
-Arduino language reference:
-    https://docs.arduino.cc/language-reference/
-Datasheets:
-    - shift register: https://www.ti.com/lit/ds/symlink/sn74hc595.pdf
-    - 7-segment display: https://panda-bg.com/datasheet/1963-092044-Single-LED-Digit-Display-KW1-561CSA-RED.pdf
+    Arduino forum
+        https://forum.arduino.cc/
+    
+    Arduino language reference:
+        https://docs.arduino.cc/language-reference/
+        
+    Datasheets:
+        - shift register: https://www.ti.com/lit/ds/symlink/sn74hc595.pdf
+        - 7-segment display: https://panda-bg.com/datasheet/1963-092044-Single-LED-Digit-Display-KW1-561CSA-RED.pdf
