@@ -31,6 +31,9 @@ Hardware:
         - Hook up wires and jump wires
         - resistors for the leds (minimun 470 ohm)
 
+    ![tinkercad](https://github.com/user-attachments/assets/de5d3f25-b9a8-4a3c-812b-32b05907d8cc)
+
+
     LEDs were connected to Arduino UNO analog pins A2-A5.
 
     Buttons were connected to Arduino UNO digital pins 2-5.
@@ -102,7 +105,7 @@ Software:
 
 Project outcome:
 
-    [20241015_205320](https://github.com/user-attachments/assets/2be4f096-c502-40b6-81a0-f847f535b59e)
+    [Game_at_starting_state](https://github.com/user-attachments/assets/2be4f096-c502-40b6-81a0-f847f535b59e)
 
     The project was succesful. 
     We were able to replicate the SpedenSpelit Nopeustesti game, 
