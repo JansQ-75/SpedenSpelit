@@ -50,10 +50,13 @@ void show1(void);
               is shown. 
 */
 void show2(int);
-
+/*
+  shutLed() function is called by checkGame subroutine. It shuts down random LED that was lighted up earlier.
+*/
 void shutLed (int);
 
-void setRandomLed();
-
+/*
+  blinkLeds() function blinks all LEDs three times
+*/
 void blinkLeds();
 #endif

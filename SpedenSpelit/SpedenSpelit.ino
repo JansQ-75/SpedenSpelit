@@ -21,10 +21,8 @@ unsigned long buttonPressTime = 0;
 bool isButtonPressed = false;
 int playerButton; // variable in checkGame function. (buttonNumber = playerButton).
 
-
-
+// variables for gamestart
 bool gameStarted = false; // boolean to indicate when game has been started by player.
-// bool ledActive = false; // voi poistaa?
 volatile int score = 0; // score of right button clicks. This is send to function 'void showResult(byte result)'
 
 
@@ -62,8 +60,6 @@ void loop()
 
     if (newTimerInterrupt){
     ledArray[ledIndex] = randomLed; // stores random number to ledArray
-    /*Serial.print("ledi taulukkoon talletetaan: ");
-    Serial.println(ledArray[arrayIndex]);*/
     ledIndex++; //increments arrayIndex by 1
     setLed(randomLed); //lights up the led
     Serial.print("LED numero:  ");  // Debugging statement
@@ -74,11 +70,10 @@ void loop()
     // This code is run only if game has been started
     if (gameStarted) {
       if (playerPressedButton) {// boolean is true --> player has pressed some button and we start checking buttonpresses
-    checkGame(buttonNumber); // calls checkGame() -funktion with the button number player has pressed
-    playerPressedButton = false; // boolean is set to false to avoid unwanted re-run
+      checkGame(buttonNumber); // calls checkGame() -funktion with the button number player has pressed
+      playerPressedButton = false; // boolean is set to false to avoid unwanted re-run
+      }
     }
-    }
-
   }
 
 void initializeTimer(void)
@@ -103,12 +98,9 @@ void initializeTimer(void)
 } 
 ISR(TIMER1_COMPA_vect)
 {
-
   randomLed = random(0,4); // Generate a random number when the interrupt occurs
     
-    
   interruptCounter++; //increments interruptcounter
-
 
   if (interruptCounter >= 10) { //checks if 10 interrupts have occurred
     currentOCR1A = (unsigned long)(currentOCR1A * 0.9);  // Increase timers interrupts by 10%
@@ -124,10 +116,7 @@ ISR(TIMER1_COMPA_vect)
   }
 
   newTimerInterrupt = true; // notify loop that the new random number is ready
-
-
 }
-
 
 void checkGame(int playerButton) //checkGame
 {
@@ -138,27 +127,15 @@ void checkGame(int playerButton) //checkGame
          Serial.println(buttonArray[buttonIndex]);
   if (buttonArray[buttonIndex] == ledArray[buttonIndex]){ // comparing the pressed button with the led
     shutLed(buttonArray[buttonIndex]); // turn off the correct led
-    buttonIndex++;
-    score++; //increments score
+    buttonIndex++; // increments buttonIndex by 1
+    score++; //increments score by 1
     Serial.print("Pisteet: ");
     Serial.println(score);
     showResult(score); // update display with current score
   }
   else { // Wrong button press equals gameover
-    gameOver();
+    gameOver(); // calls function 'gameOver'
   }
-  
-}
-
-void gameOver(){
-        Serial.print("Peli ohi..."); //Gamer over message in serial monitor
-        clearAllLeds(); // clear leds
-        blinkLeds();
-        textGameOver(); // calls 'textGameOver' -function to write text to 7-segment display
-        cli(); //stop timer
-        gameStarted = false; // reset game state
-        isButtonPressed = false; // palataan alkuun
-        sei(); // ei toimi, koska timer1 jatkaa tästä eteenpäin. Pitäisi nollata jotenkin.
 }
 
 void startTheGame(){
@@ -169,50 +146,26 @@ void startTheGame(){
 void initializeGame()
 {
   gameStarted = true; // flags game started as true
-    score = 0; // reset score on game initialization
+  score = 0; // reset score on game initialization
+  buttonIndex = 0; // reset buttonIndex
+  ledIndex = 0; // reset ledIndex
   showResult (0); // Show starting score 0
   clearAllLeds(); // Clears leds
-  buttonIndex = 0;
-  playerPressedButton = false;
+  isButtonPressed = false; // reset boolean needed at start
+  newTimerInterrupt = false; // reset boolean for timer1 related actions in the loop
+  playerPressedButton = false; // reset boolean for detecting pressed buttons in the loop
+  currentOCR1A = 15624; // reset OCR1A for timer1
+}
 
-
-} 
-
-// voi poistaa?
-/*void buttonPressed(){
-  if (ledActive && digitalRead(2) == LOW || digitalRead(3) == LOW || digitalRead(4) == LOW || digitalRead(5) == LOW ){ //Check if a valid button is pressed and that the leds are active
-   Serial.print("Button pressed: ");
-        Serial.println(buttonNumber);
-
-    checkGame(buttonNumber); //check if the pressed button is correct
-  }
-  }
-  if (digitalRead(2) == HIGH && digitalRead(3) == HIGH  && digitalRead(4) == HIGH && digitalRead(5) == HIGH) {
-  
-    if (digitalRead(2) == LOW) { // Check if button on pin 2 is pressed
-      playerButton = 0; // Set buttonNumber to 0 for button on pin 2
-    } 
-    else if (digitalRead(3) == LOW) { // Check if button on pin 3 is pressed
-      playerButton = 1; // Set buttonNumber to 1 for button on pin 3
-    }
-    else if (digitalRead(4) == LOW) { // Check if button on pin 4 is pressed
-      playerButton = 2; // Set buttonNumber to 2 for button on pin 4
-    }
-    else if (digitalRead(5) == LOW) { // Check if button on pin 5 is pressed
-      playerButton = 3; // Set buttonNumber to 3 for button on pin 5
-    }
-  }
-    
-    // If any button was pressed, call checkGame()
-    if (playerButton >= 0 && playerButton <= 3) {
-      Serial.print("Button pressed: ");
-      Serial.println(playerButton);
-
-      checkGame(playerButton); // Call checkGame() with the pressed button number
-      playerButton = 5; // sets playerButton value to 5. In order to fail if-clause
-    }
-  
-}*/
-
-
+void gameOver(){
+        Serial.print("Peli ohi..."); //Gamer over message in serial monitor
+        clearAllLeds(); // clear leds
+        blinkLeds(); // blinks all leds 3 times and informs player about game over.
+        textGameOver(); // calls 'textGameOver' -function to write text to 7-segment display
+        cli();
+        TIMSK1 = 0; //stop timer1
+        sei();
+        gameStarted = false; // reset game state
+        isButtonPressed = false; // palataan alkuun
+}
 

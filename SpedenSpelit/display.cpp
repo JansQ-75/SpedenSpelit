@@ -8,8 +8,6 @@ const int STCP_pin2 = 12;   // Arduino pin 12 = latch pin in second shift regist
 
 void initializeDisplay(void)
 {
-
-
 // set shift registers pins to output
 pinMode(DS_pin, OUTPUT);   
 pinMode(STCP_pin, OUTPUT);

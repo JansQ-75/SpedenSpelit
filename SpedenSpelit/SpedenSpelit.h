@@ -6,10 +6,11 @@
 
 /*
   initializeTimer() subroutine intializes Arduino Timer1 module to
-  give interrupts at rate 1Hz
-  
+  give interrupts at rate 1Hz.
+  Also allows ORC1A value to be changed during the game via 'currentORC1A' variable --> speeds up timer with 10% every 10th interrupt.
 */
 void initializeTimer(void);
+
 // Intoduce TIMER1_COMPA_vect Interrupt SeRvice (ISR) function for timer.
 ISR(TIMER1_COMPA_vect);
 
@@ -30,8 +31,7 @@ void initializeGame(void);
   by 1.
   
   Parameters
-  byte lastButtonPress of the player 0 or 1 or 2 or 3
-  
+  byte: number of button player pressed; 0, 1, 2 or 3.
 */
 void checkGame(byte);
 
@@ -42,6 +42,14 @@ void checkGame(byte);
   the Game.
 */
 void startTheGame(void);
+
+/* 
+  gameOver() subroutine blinks the leads to inform player the game has been lost.
+  textGameOver() function is called to write "Loser...see ya" to 7-segment displays.
+  Timer1 interrupts are stopped.
+  Resets booleans 'gameStarted' and isButtonPressed to false, in order to allow new game to be started.
+*/
+void gameOver();
 
 
 #endif
