@@ -158,6 +158,8 @@ void initializeGame()
 }
 
 void gameOver(){
+	showResult(score);  // show players points on 7-segment display
+    	delay(2000);  // add some lag that points show on 7-segment display before text GameeOver
         Serial.print("Peli ohi..."); //Gamer over message in serial monitor
         clearAllLeds(); // clear leds
         blinkLeds(); // blinks all leds 3 times and informs player about game over.
