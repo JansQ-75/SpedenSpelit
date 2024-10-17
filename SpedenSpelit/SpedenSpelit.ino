@@ -24,7 +24,8 @@ int playerButton; // variable in checkGame function. (buttonNumber = playerButto
 // variables for gamestart
 bool gameStarted = false; // boolean to indicate when game has been started by player.
 volatile int score = 0; // score of right button clicks. This is send to function 'void showResult(byte result)'
-
+volatile int highScore = 0; //variable for game's high score
+bool continueGame = false; // boolean to indicate if player has played game before
 
 void setup()
 {
@@ -40,7 +41,11 @@ void loop()
 {
   // Before game has been started, first LED indicates which button is the "start button". Player must press "start button" for 1 second to start the game
   if (!gameStarted) {
-    setLed(0);
+    setLed(0); // lights up LED 166666666666666666
+    // if player has played game before, boolean 'continueGame' is set true.
+    if (continueGame) {
+      playerHighScore(score);// calls function 'playerHighScore' with last score as parameter.
+    }
   }
   if (digitalRead(2) == LOW) { // Check if button 0 (analog 2) is being pressed to start the game
     if (!isButtonPressed) {
@@ -135,6 +140,8 @@ void checkGame(int playerButton) //checkGame
   }
   else { // Wrong button press equals gameover
     gameOver(); // calls function 'gameOver'
+    continueGame = true;// set boolean true to indicate game is lost and ready to start new game
+
   }
 }
 
@@ -155,19 +162,29 @@ void initializeGame()
   newTimerInterrupt = false; // reset boolean for timer1 related actions in the loop
   playerPressedButton = false; // reset boolean for detecting pressed buttons in the loop
   currentOCR1A = 15624; // reset OCR1A for timer1
+  continueGame = false; //!!!!!!!
 }
 
 void gameOver(){
+  clearAllLeds(); // clear leds
 	showResult(score);  // show players points on 7-segment display
-    	delay(2000);  // add some lag that points show on 7-segment display before text GameeOver
-        Serial.print("Peli ohi..."); //Gamer over message in serial monitor
-        clearAllLeds(); // clear leds
-        blinkLeds(); // blinks all leds 3 times and informs player about game over.
-        textGameOver(); // calls 'textGameOver' -function to write text to 7-segment display
-        cli();
-        TIMSK1 = 0; //stop timer1
-        sei();
-        gameStarted = false; // reset game state
-        isButtonPressed = false; // palataan alkuun
+  delay(2000);  // add some lag that points show on 7-segment display before text GameeOver
+  Serial.print("Peli ohi..."); //Gamer over message in serial monitor
+  clearAllLeds(); // clear leds
+  blinkLeds(); // blinks all leds 3 times and informs player about game over.
+  textGameOver(); // calls 'textGameOver' -function to write text to 7-segment display
+  cli();
+  TIMSK1 = 0; //stop timer1
+  sei();
+  gameStarted = false; // reset game state
+  isButtonPressed = false; // palataan alkuun
+}
+
+void playerHighScore(int lastScore)
+{
+  if (lastScore > highScore) {
+    highScore = lastScore; // compares lastscore to highscore, and set new highscore if needed
+  }
+  showResult(highScore);// shows highscore on display(s)
 }
 
