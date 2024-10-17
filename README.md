@@ -3,7 +3,7 @@
 
 **Project name: SpedenSpelit**
 
-    in the 90's in Finland ther was a gameshow on tv called SpedenSpelit. 
+    In the 90's in Finland there was a gameshow on tv called SpedenSpelit. 
     In this gameshow Nopeustesti -game was introduced to public. 
     Nopeustesti -game is a reaction game that has 4 LED buttons. 
     LED buttons are lit randomly and player must press the right button in order to continue the game. 
