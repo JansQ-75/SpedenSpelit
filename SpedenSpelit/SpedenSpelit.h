@@ -51,5 +51,13 @@ void startTheGame(void);
 */
 void gameOver();
 
+/*
+  playerHighScore() function compares player's last score to game's high score. If last score is higher, function sets it as an new high score.
+  After comparison, high score is shown on display
+
+  parameter
+  int: player's last score
+*/
+void playerHighScore(int);
 
 #endif
