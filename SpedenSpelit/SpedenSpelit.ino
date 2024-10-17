@@ -41,7 +41,7 @@ void loop()
 {
   // Before game has been started, first LED indicates which button is the "start button". Player must press "start button" for 1 second to start the game
   if (!gameStarted) {
-    setLed(0); // lights up LED 166666666666666666
+    setLed(0); // lights up LED 1
     // if player has played game before, boolean 'continueGame' is set true.
     if (continueGame) {
       playerHighScore(score);// calls function 'playerHighScore' with last score as parameter.
@@ -162,7 +162,7 @@ void initializeGame()
   newTimerInterrupt = false; // reset boolean for timer1 related actions in the loop
   playerPressedButton = false; // reset boolean for detecting pressed buttons in the loop
   currentOCR1A = 15624; // reset OCR1A for timer1
-  continueGame = false; //!!!!!!!
+  continueGame = false; // reset value to false
 }
 
 void gameOver(){
