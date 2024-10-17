@@ -25,8 +25,6 @@ unsigned long currentTime = millis();
       if ((currentTime - lastDebounceTime) > debounceDelay) { // Checking the debounce time
          buttonNumber = i - 2;  // Saves the button that  has been pressed
         lastDebounceTime = currentTime; // Updates the debounce time
-        Serial.print("Button pressed in ISR: ");
-        Serial.println(buttonNumber);
         playerPressedButton = true;
       }
       

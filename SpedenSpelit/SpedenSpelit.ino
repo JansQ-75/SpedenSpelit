@@ -55,7 +55,6 @@ void loop()
 
     if (millis() - buttonPressTime >= 1000 && !gameStarted) { // Checking if the button has been pressed for 1 second (1000 ms)
       startTheGame(); // Start the game if the button has been pressed for 1 second
-      Serial.println("Peli alkaa!");
       initializeTimer(); // Timer starts
       gameStarted = true; // Informs that the game has been started
     }
@@ -67,8 +66,6 @@ void loop()
     ledArray[ledIndex] = randomLed; // stores random number to ledArray
     ledIndex++; //increments arrayIndex by 1
     setLed(randomLed); //lights up the led
-    Serial.print("LED numero:  ");  // Debugging statement
-    Serial.println(randomLed);
     newTimerInterrupt = false;
     }
 
@@ -126,16 +123,10 @@ ISR(TIMER1_COMPA_vect)
 void checkGame(int playerButton) //checkGame
 {
   buttonArray[buttonIndex] = playerButton; // stores the button pressed
-         Serial.print("Painettu nappi");
-         Serial.println(playerButton);
-         Serial.print("button taulukkoon talletetaan: ");
-         Serial.println(buttonArray[buttonIndex]);
   if (buttonArray[buttonIndex] == ledArray[buttonIndex]){ // comparing the pressed button with the led
     shutLed(buttonArray[buttonIndex]); // turn off the correct led
     buttonIndex++; // increments buttonIndex by 1
     score++; //increments score by 1
-    Serial.print("Pisteet: ");
-    Serial.println(score);
     showResult(score); // update display with current score
   }
   else { // Wrong button press equals gameover
@@ -156,7 +147,7 @@ void initializeGame()
   score = 0; // reset score on game initialization
   buttonIndex = 0; // reset buttonIndex
   ledIndex = 0; // reset ledIndex
-  showResult (0); // Show starting score 0
+  showResult(score); // Show starting score 0
   clearAllLeds(); // Clears leds
   isButtonPressed = false; // reset boolean needed at start
   newTimerInterrupt = false; // reset boolean for timer1 related actions in the loop
@@ -169,7 +160,6 @@ void gameOver(){
   clearAllLeds(); // clear leds
 	showResult(score);  // show players points on 7-segment display
   delay(2000);  // add some lag that points show on 7-segment display before text GameeOver
-  Serial.print("Peli ohi..."); //Gamer over message in serial monitor
   clearAllLeds(); // clear leds
   blinkLeds(); // blinks all leds 3 times and informs player about game over.
   textGameOver(); // calls 'textGameOver' -function to write text to 7-segment display
